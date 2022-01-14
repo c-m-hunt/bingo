@@ -1,12 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { bingoReducer } from './reducers';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
+const store = configureStore({ reducer: bingoReducer });
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
