@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface BingoState {
+export interface BingoState {
   pickedBalls: number[];
   initialBalls: number[];
   remainingBalls: number[];
@@ -18,7 +18,7 @@ const bingoSlice = createSlice({
   name: 'bingo',
   initialState,
   reducers: {
-    restartGame: (state: BingoState) => { state = initialState },
+    restartGame: () => initialState,
     pickBall: (state: BingoState) => {
       const pickedBall = state.remainingBalls[Math.floor(Math.random() * state.remainingBalls.length)];
       state.pickedBalls.push(pickedBall);
@@ -27,8 +27,7 @@ const bingoSlice = createSlice({
   }
 })
 
-const { restartGame, pickBall } = bingoSlice.actions;
-export { restartGame, pickBall };
+export const { restartGame, pickBall } = bingoSlice.actions;
 
 const bingoReducer = bingoSlice.reducer;
 

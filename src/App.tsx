@@ -1,24 +1,34 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { BingoState, pickBall, restartGame } from './store';
 
-function App() {
+const App = () => {
+  const remainingBalls = useSelector<BingoState, number[]>(state => state.remainingBalls);
+  const pickedBalls = useSelector<BingoState, number[]>(state => state.pickedBalls);
+  const dispatch = useDispatch();
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
       </header>
+      <section>
+        <div>
+          <button onClick={() => {dispatch(pickBall())}}>Pick a ball</button>
+          <button onClick={() => {dispatch(restartGame())}}>Restart game</button>
+        </div>
+        <div>
+          {remainingBalls.map(ball => (
+            <span key={ball}>{ball}</span>
+          ))}
+        </div>
+        <div>
+          {pickedBalls.map(ball => (
+            <span key={ball}>{ball}</span>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
