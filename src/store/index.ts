@@ -28,9 +28,22 @@ const getInitialState = (): BingoState => {
   return initialState;
 };
 
-const saveCurrentGame = (state: BingoState) => {
+const getCurrentGame = (state: BingoState): Game => {
   const { history, ...currentGame } = { ...state };
-  window.localStorage.setItem(CURRENT_GAME, JSON.stringify(currentGame));
+  return currentGame;
+};
+
+const saveCurrentGame = (state: BingoState) => {
+  window.localStorage.setItem(
+    CURRENT_GAME,
+    JSON.stringify(getCurrentGame(state))
+  );
+};
+
+const saveHistory = (state: BingoState) => {
+  const { history } = state;
+  history.push(getCurrentGame({ ...state }));
+  // window.localStorage.setItem(GAME_HISTORY, JSON.stringify(history));
 };
 
 const initialState: BingoState = {
@@ -46,9 +59,13 @@ const bingoSlice = createSlice({
   name: "bingo",
   initialState: getInitialState(),
   reducers: {
-    restartGame: () => {
+    restartGame: (state: BingoState) => {
+      saveHistory(state);
       saveCurrentGame(initialState);
-      return getInitialState();
+      state.pickedBalls = initialState.pickedBalls;
+      state.remainingBalls = initialState.remainingBalls;
+      state.lookingFor = initialState.lookingFor;
+      state.complete = initialState.complete;
     },
     pickBall: (state: BingoState) => {
       const pickedBall =
