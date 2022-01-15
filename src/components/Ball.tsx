@@ -5,25 +5,26 @@ import { TextStyle } from 'pixi.js'
 interface Props {
   number: number;
   color?: number;
+  size?: number;
 }
 
-export const Ball = ({ number, color }: Props) => {
-  const size = 400;
+export const Ball = ({ number, color, size }: Props) => {
+  const ballSize = size || 400;
   const draw = React.useCallback(g => {
     g.clear()
     g.beginFill(color !== undefined ? color : 0xff3300)
-    g.drawCircle(size/2, size/2, size/2)
+    g.drawCircle(ballSize/2, ballSize/2, ballSize/2)
     g.endFill()
-  }, [color])
+  }, [color, ballSize])
   return (
     < >
       <Graphics draw={draw} />
-      <Container width={size * 2} height={size * 2}>
-        <Text text={number?.toString()} x={size/2} y={size/2} anchor={0.5} style={
+      <Container width={ballSize * 2} height={ballSize * 2}>
+        <Text text={number?.toString()} x={ballSize/2} y={ballSize/2} anchor={0.5} style={
           new TextStyle({
             align: "center",
             fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-            fontSize:size/2,
+            fontSize:ballSize/2,
             fontWeight: 'bold',
             fill: ['#ffffff'], // gradient
             stroke: '#000',

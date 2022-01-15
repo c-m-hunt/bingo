@@ -21,8 +21,6 @@ const App = () => {
   const pickedBalls = useSelector<BingoState, number[]>(state => state.pickedBalls);
   const lastNumber = useSelector(getLastNumber);
   const dispatch = useDispatch();
-  const height = 1200;
-  const width = 2000;
 
   const pickBallKey = useKeyPress('p');
   const restartGameKey = useKeyPress('r');
@@ -59,20 +57,23 @@ const App = () => {
     }
   }, [dispatch, restartGameKey])
 
+  const { height, width } = canvasSize;
+  const ballSize = width / 8
   return (
     <div ref={canvasRef} style={{ width: '100vw', height: '100vh' }}>
-      <Stage width={canvasSize?.width} height={canvasSize.height}>
-        <Container scale={1.5} x={200}>
-          {lastNumber && <Ball number={lastNumber} />}
-        </Container>
-        <Container x={50} y={canvasSize.height - 250} anchor={0.5}>
+      <Stage width={width} height={height}>
+
+        {lastNumber && <Container x={width / 20 * 3.5} y={height / 20 * 2}>
+          <Ball number={lastNumber} size={width / 20 * 5} />
+        </Container>}
+        <Container x={width / 50} y={height / 4 * 3} anchor={0.5}>
           {[...pickedBalls].reverse().slice(0, 5).map((b, i) => (
-            <Container x={i * 220} key={b} scale={0.5}>
-              <Ball number={b} />
+            <Container x={i * (ballSize / 10 * 11)} key={b}>
+              <Ball number={b} size={ballSize}/>
             </Container>
           ))}
         </Container>
-        <Container x={1200}>
+        <Container x={width / 20 * 12}>
           <AllBalls initialBalls={initialBalls} pickedBalls={pickedBalls} remainingBalls={remainingBalls} />
         </Container>
       </Stage>
