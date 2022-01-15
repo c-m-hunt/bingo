@@ -1,12 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import { bingoReducer } from './store';
-import './index.css';
-import App from './components/App';
-import reportWebVitals from './reportWebVitals';
-
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import { bingoReducer } from "./store";
+import "./index.css";
+import App from "./components/App";
+import reportWebVitals from "./reportWebVitals";
 
 const store = configureStore({ reducer: bingoReducer });
 
@@ -16,7 +15,7 @@ ReactDOM.render(
       <App />
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

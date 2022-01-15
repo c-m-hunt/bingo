@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 export const useKeyPress = (targetKey: string): boolean => {
   // State for keeping track of whether key is pressed
   const [keyPressed, setKeyPressed] = useState(false);
@@ -25,4 +25,4 @@ export const useKeyPress = (targetKey: string): boolean => {
     };
   }, []); // Empty array ensures that effect is only run on mount and unmount
   return keyPressed;
-}
+};
