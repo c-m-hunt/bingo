@@ -15,7 +15,7 @@ export const AllBalls = ({ initialBalls, remainingBalls, pickedBalls }: Props) =
     <Container scale={0.3}>
       {initialBalls.map((b, i) => {
         return (
-          <Container x={(i%10) * 220} y={Math.floor((i / 10)) * 220}>
+          <Container x={(i%10) * 220} y={Math.floor((i / 10)) * 220} scale={0.5}>
             <Ball number={b} color={pickedBalls.includes(b) ? 0xff0000 : 0x000000} />
           </Container>
         )

@@ -62,12 +62,12 @@ const App = () => {
   return (
     <div ref={canvasRef} style={{ width: '100vw', height: '100vh' }}>
       <Stage width={canvasSize?.width} height={canvasSize.height}>
-        <Container scale={3} x={200}>
+        <Container scale={1.5} x={200}>
           {lastNumber && <Ball number={lastNumber} />}
         </Container>
         <Container x={50} y={canvasSize.height - 250} anchor={0.5}>
           {[...pickedBalls].reverse().slice(0, 5).map((b, i) => (
-            <Container x={i * 220} key={b}>
+            <Container x={i * 220} key={b} scale={0.5}>
               <Ball number={b} />
             </Container>
           ))}
