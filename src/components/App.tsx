@@ -3,8 +3,8 @@ import { TextStyle } from "pixi.js";
 import { Stage, Container, Text } from "@inlet/react-pixi";
 import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
-import { BingoState, pickBall, restartGame } from "../store";
-import { getLastNumber } from "../store/selectors";
+import { BingoState, pickBall, restartGame, winConfirmed } from "../store";
+import { getLastNumber, getLookingForText } from "../store/selectors";
 import { useKeyPress } from "../hooks";
 import { Ball } from "./Ball";
 import { AllBalls } from "./AllBalls";
@@ -21,15 +21,14 @@ const App = () => {
     width: 0,
     height: 0,
   });
+  const [checkingWin, setCheckingWin] = useState<boolean>(false);
   const initialBalls = useSelector<BingoState, number[]>(
     (state) => state.initialBalls
   );
   const pickedBalls = useSelector<BingoState, number[]>(
     (state) => state.pickedBalls
   );
-  const lookingFor = useSelector<BingoState, string>(
-    (state) => state.lookingFor
-  );
+  const lookingFor = useSelector(getLookingForText);
   const lastNumber = useSelector(getLastNumber);
   const dispatch = useDispatch();
   const pickBallKey = useKeyPress("p");
@@ -75,6 +74,14 @@ const App = () => {
     }
   }, [dispatch, restartGameKey]);
 
+  useEffect((): void => {
+    if (winKey) {
+      if (checkingWin) {
+        dispatch(winConfirmed());
+      }
+      setCheckingWin(!checkingWin);
+    }
+  }, [winKey]);
   const { height, width } = canvasSize;
   const ballSize = width / 8;
   return (
@@ -87,12 +94,17 @@ const App = () => {
         )}
         {!lastNumber && (
           <Container x={(width / 20) * 5} y={(height / 20) * 1}>
-            <ReadyToGoText size={100} />
+            <ReadyToGoText size={width / 20} />
           </Container>
         )}
-        <Container x={width / 50} y={(height / 4) * 2.9} anchor={0.5}>
-          <PreviousNumbers pickedNumbers={pickedBalls} size={ballSize} />
-        </Container>
+        {lastNumber && (
+          <Container x={width / 50} y={(height / 4) * 2.9} anchor={0.5}>
+            <PreviousNumbers
+              pickedNumbers={pickedBalls}
+              size={ballSize * (2 / 3)}
+            />
+          </Container>
+        )}
         <Container x={(width / 20) * 12} y={height / 100}>
           <AllBalls
             initialBalls={initialBalls}
@@ -100,10 +112,10 @@ const App = () => {
             size={width / 30}
           />
         </Container>
-        <Container x={(width / 20) * 15} y={(height / 100) * 70}>
+        <Container x={(width / 20) * 14} y={(height / 100) * 65}>
           <LookingForText
             text={`Looking for ${lookingFor}`}
-            size={width / 30}
+            size={width / 25}
           />
         </Container>
       </Stage>

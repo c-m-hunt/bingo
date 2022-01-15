@@ -1,49 +1,48 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Graphics, Text, Container } from "@inlet/react-pixi";
 import { TextStyle } from "pixi.js";
 
 interface Props {
   number: number;
   color?: number;
-  size?: number;
+  size: number;
 }
 
 export const Ball = ({ number, color, size }: Props) => {
-  const ballSize = size || 400;
-  const draw = React.useCallback(
+  const draw = useCallback(
     (g) => {
       g.clear();
       g.lineStyle(2, 0xffffff, 1);
       g.beginFill(color !== undefined ? color : 0xff3300);
-      g.drawCircle(ballSize / 2, ballSize / 2, ballSize / 2);
+      g.drawCircle(size / 2, size / 2, size / 2);
       g.endFill();
     },
-    [color, ballSize]
+    [color, size]
   );
   return (
     <>
       <Graphics draw={draw} />
-      <Container width={ballSize * 2} height={ballSize * 2}>
+      <Container key={size} width={size * 2} height={size * 2}>
         <Text
           text={number?.toString()}
-          x={ballSize / 2}
-          y={ballSize / 2}
+          x={size / 2}
+          y={size / 2}
           anchor={0.5}
           style={
             new TextStyle({
               align: "center",
               fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-              fontSize: ballSize / 2,
+              fontSize: size / 2,
               fontWeight: "bold",
               fill: ["#ffffff"], // gradient
               stroke: "#000",
-              strokeThickness: ballSize / 100,
-              letterSpacing: ballSize / 20,
+              strokeThickness: size / 100,
+              letterSpacing: size / 20,
               dropShadow: true,
               dropShadowColor: "#000",
-              dropShadowBlur: ballSize / 20,
+              dropShadowBlur: size / 20,
               dropShadowAngle: Math.PI / 6,
-              dropShadowDistance: ballSize / 50,
+              dropShadowDistance: size / 50,
             })
           }
         />
