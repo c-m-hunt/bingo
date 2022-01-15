@@ -3,11 +3,11 @@ import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { BingoState, pickBall, restartGame } from '../store';
 import { getLastNumber } from '../store/selectors';
-import { Stage, Container } from '@inlet/react-pixi';
+import { Stage, Container, Text } from '@inlet/react-pixi';
 import { useKeyPress } from '../hooks';
 import { Ball } from './Ball';
 import { AllBalls } from './AllBalls';
-
+import { TextStyle } from 'pixi.js'
 export interface CanvasSize {
   width: number;
   height: number;
@@ -65,14 +65,17 @@ const App = () => {
         {lastNumber && <Container x={width / 20 * 3.5} y={height / 20 * 2}>
           <Ball number={lastNumber} size={width / 20 * 5} />
         </Container>}
-        <Container x={width / 50} y={height / 4 * 3} anchor={0.5}>
+        { !lastNumber && <Container x={width / 20 * 5} y={height / 20 * 1}>
+          <ReadyToGoText size={100} />
+        </Container>}
+        <Container x={width / 50} y={height / 4 * 2.9} anchor={0.5}>
           {[...pickedBalls].reverse().slice(0, 5).map((b, i) => (
             <Container x={i * (ballSize / 10 * 11)} key={b}>
               <Ball number={b} size={ballSize}/>
             </Container>
           ))}
         </Container>
-        <Container x={width / 20 * 12}>
+        <Container x={width / 20 * 12} y={height / 100}>
           <AllBalls initialBalls={initialBalls} pickedBalls={pickedBalls} size={width/30} />
         </Container>
         <Container>
@@ -84,3 +87,30 @@ const App = () => {
 }
 
 export default App;
+
+interface ReadyToGoTextProps {
+  size: number;
+}
+
+const ReadyToGoText = ({size}: ReadyToGoTextProps) => {
+
+  return (
+    <Text text="Get ready to start!" anchor={0} style={
+      new TextStyle({
+        align: "center",
+        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+        fontSize: size,
+        fontWeight: 'bold',
+        fill: ['#ffffff'], // gradient
+        stroke: '#000',
+        strokeThickness: size / 100,
+        letterSpacing: size / 20,
+        dropShadow: true,
+        dropShadowColor: '#ffffff',
+        dropShadowBlur: size / 20,
+        dropShadowDistance: size / 50,
+        wordWrap: true,
+      })
+    } />
+  )
+}

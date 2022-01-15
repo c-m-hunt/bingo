@@ -10,12 +10,13 @@ interface Props {
 
 
 export const AllBalls = ({ initialBalls, pickedBalls, size }: Props) => {
+  const ballSize = size || 100;
   return (
     <Container>
       {initialBalls.map((b, i) => {
         return (
-          <Container key={b} x={(i%10) * (size + size/10)} y={Math.floor((i / 10)) * (size + size/10)}>
-            <Ball number={b} color={pickedBalls.includes(b) ? 0xff0000 : 0x000000} size={size} />
+          <Container key={`${b}-${ballSize}`} x={(i%10) * (ballSize + ballSize/10)} y={Math.floor((i / 10)) * (ballSize + ballSize/10)}>
+            <Ball number={b} color={pickedBalls.includes(b) ? 0xff0000 : 0x000000} size={ballSize} />
           </Container>
         )
       })}
