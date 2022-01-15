@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Graphics, Text, Container } from "@inlet/react-pixi";
 import { TextStyle } from "pixi.js";
 

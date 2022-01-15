@@ -1,9 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TextStyle } from "pixi.js";
-import { Stage, Container, Text } from "@inlet/react-pixi";
+import { Stage, Container, Text, Graphics } from "@inlet/react-pixi";
 import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
-import { BingoState, pickBall, restartGame, winConfirmed } from "../store";
+import {
+  BingoState,
+  pickBall,
+  restartGame,
+  winConfirmed,
+  cancelWin,
+} from "../store";
 import { getLastNumber, getLookingForText } from "../store/selectors";
 import { useKeyPress } from "../hooks";
 import { Ball } from "./Ball";
@@ -34,6 +40,7 @@ const App = () => {
   const pickBallKey = useKeyPress("p");
   const restartGameKey = useKeyPress("r");
   const winKey = useKeyPress("w");
+  const cancelWinKey = useKeyPress("c");
 
   useEffect((): any => {
     console.log("Resized");
@@ -63,16 +70,27 @@ const App = () => {
   }, [canvasRef.current?.offsetWidth, canvasRef.current?.offsetHeight]);
 
   useEffect((): void => {
-    if (pickBallKey) {
+    if (pickBallKey && !checkingWin) {
       dispatch(pickBall());
     }
   }, [dispatch, pickBallKey]);
 
   useEffect((): void => {
-    if (restartGameKey) {
+    if (restartGameKey && !checkingWin) {
       dispatch(restartGame());
     }
   }, [dispatch, restartGameKey]);
+
+  useEffect((): void => {
+    if (cancelWinKey) {
+      if (checkingWin) {
+        console.log("Cancelling win");
+        setCheckingWin(false);
+      } else {
+        dispatch(cancelWin());
+      }
+    }
+  }, [dispatch, cancelWinKey]);
 
   useEffect((): void => {
     if (winKey) {
@@ -82,6 +100,7 @@ const App = () => {
       setCheckingWin(!checkingWin);
     }
   }, [winKey]);
+
   const { height, width } = canvasSize;
   const ballSize = width / 8;
   return (
@@ -118,12 +137,63 @@ const App = () => {
             size={width / 25}
           />
         </Container>
+        {checkingWin && (
+          <Container x={(width / 20) * 5} y={(height / 4) * 1}>
+            <Message
+              height={height / 2}
+              width={width / 2}
+              size={width / 20}
+              text="Checking win. Please wait..."
+            />
+          </Container>
+        )}
       </Stage>
     </div>
   );
 };
 
 export default App;
+
+interface MessageTextProps {
+  width: number;
+  height: number;
+  size: number;
+  text: string;
+}
+
+const Message = ({ width, height, text, size }: MessageTextProps) => {
+  const draw = useCallback(
+    (g) => {
+      g.clear();
+      g.beginFill(0xffffff, 0.9);
+      g.drawRoundedRect(0, 0, width, height, size);
+      g.endFill();
+    },
+    [height, width]
+  );
+  return (
+    <>
+      <Graphics draw={draw} />
+      <Text
+        text={text}
+        width={width - width / 10}
+        x={width / 2}
+        y={height / 2}
+        anchor={0.5}
+        style={{
+          fontFamily: "Arial",
+          fontSize: size,
+          fill: "black  ",
+          align: "center",
+          dropShadow: true,
+          dropShadowColor: "#fffffff",
+          dropShadowBlur: size / 5,
+          dropShadowDistance: size / 20,
+        }}
+      />
+    </>
+  );
+};
 
 interface LookingForTextProps {
   size: number;

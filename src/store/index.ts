@@ -67,6 +67,7 @@ const bingoSlice = createSlice({
       state.lookingFor = initialState.lookingFor;
       state.complete = initialState.complete;
     },
+
     pickBall: (state: BingoState) => {
       const pickedBall =
         state.remainingBalls[
@@ -85,10 +86,17 @@ const bingoSlice = createSlice({
       }
       saveCurrentGame(state);
     },
+    cancelWin: (state: BingoState) => {
+      if (state.lookingFor > 0) {
+        state.lookingFor -= 1;
+      }
+      saveCurrentGame(state);
+    },
   },
 });
 
-export const { restartGame, pickBall, winConfirmed } = bingoSlice.actions;
+export const { restartGame, pickBall, winConfirmed, cancelWin } =
+  bingoSlice.actions;
 
 const bingoReducer = bingoSlice.reducer;
 
