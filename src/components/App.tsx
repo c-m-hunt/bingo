@@ -19,9 +19,9 @@ const App = () => {
   const initialBalls = useSelector<BingoState, number[]>(state => state.initialBalls);
   const remainingBalls = useSelector<BingoState, number[]>(state => state.remainingBalls);
   const pickedBalls = useSelector<BingoState, number[]>(state => state.pickedBalls);
+  const lookingFor = useSelector<BingoState, string>(state => state.lookingFor);
   const lastNumber = useSelector(getLastNumber);
   const dispatch = useDispatch();
-
   const pickBallKey = useKeyPress('p');
   const restartGameKey = useKeyPress('r');
 
@@ -62,7 +62,6 @@ const App = () => {
   return (
     <div ref={canvasRef} style={{ width: '100vw', height: '100vh' }}>
       <Stage width={width} height={height}>
-
         {lastNumber && <Container x={width / 20 * 3.5} y={height / 20 * 2}>
           <Ball number={lastNumber} size={width / 20 * 5} />
         </Container>}
@@ -74,7 +73,10 @@ const App = () => {
           ))}
         </Container>
         <Container x={width / 20 * 12}>
-          <AllBalls initialBalls={initialBalls} pickedBalls={pickedBalls} remainingBalls={remainingBalls} />
+          <AllBalls initialBalls={initialBalls} pickedBalls={pickedBalls} size={width/30} />
+        </Container>
+        <Container>
+
         </Container>
       </Stage>
     </div >
@@ -82,4 +84,3 @@ const App = () => {
 }
 
 export default App;
-

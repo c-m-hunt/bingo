@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React  from 'react';
 import { Graphics, Text, Container } from '@inlet/react-pixi';
 import { TextStyle } from 'pixi.js'
 
@@ -12,6 +12,7 @@ export const Ball = ({ number, color, size }: Props) => {
   const ballSize = size || 400;
   const draw = React.useCallback(g => {
     g.clear()
+    g.lineStyle(2, 0xffffff, 1)
     g.beginFill(color !== undefined ? color : 0xff3300)
     g.drawCircle(ballSize/2, ballSize/2, ballSize/2)
     g.endFill()
@@ -28,13 +29,13 @@ export const Ball = ({ number, color, size }: Props) => {
             fontWeight: 'bold',
             fill: ['#ffffff'], // gradient
             stroke: '#000',
-            strokeThickness: 5,
-            letterSpacing: 20,
+            strokeThickness: ballSize / 100,
+            letterSpacing: ballSize / 20,
             dropShadow: true,
             dropShadowColor: '#000',
-            dropShadowBlur: 4,
+            dropShadowBlur: ballSize / 20,
             dropShadowAngle: Math.PI / 6,
-            dropShadowDistance: 6,
+            dropShadowDistance: ballSize / 50,
           })
         } />
       </Container>

@@ -4,19 +4,18 @@ import { Ball } from './Ball';
 
 interface Props {
   initialBalls: number[];
-  remainingBalls: number[];
   pickedBalls: number[];
+  size: number;
 }
 
 
-export const AllBalls = ({ initialBalls, remainingBalls, pickedBalls }: Props) => {
-
+export const AllBalls = ({ initialBalls, pickedBalls, size }: Props) => {
   return (
-    <Container scale={0.3}>
+    <Container>
       {initialBalls.map((b, i) => {
         return (
-          <Container x={(i%10) * 220} y={Math.floor((i / 10)) * 220} scale={0.5}>
-            <Ball number={b} color={pickedBalls.includes(b) ? 0xff0000 : 0x000000} />
+          <Container key={b} x={(i%10) * (size + size/10)} y={Math.floor((i / 10)) * (size + size/10)}>
+            <Ball number={b} color={pickedBalls.includes(b) ? 0xff0000 : 0x000000} size={size} />
           </Container>
         )
       })}
