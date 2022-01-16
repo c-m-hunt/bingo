@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { TextStyle } from "pixi.js";
-import { Stage, Container, Text, Graphics } from "@inlet/react-pixi";
+import React, { useEffect, useRef, useState } from "react";
+import { Stage, Container } from "@inlet/react-pixi";
 import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import {
@@ -15,7 +14,7 @@ import { useKeyPress } from "../hooks";
 import { Ball } from "./Ball";
 import { AllBalls } from "./AllBalls";
 import { PreviousNumbers } from "./PreviousNumbers";
-
+import { LookingForText, Message, ReadyToGoText } from "./Text";
 export interface CanvasSize {
   width: number;
   height: number;
@@ -131,17 +130,17 @@ const App = () => {
             size={width / 30}
           />
         </Container>
-        <Container x={(width / 20) * 14} y={(height / 100) * 65}>
+        <Container x={(width / 20) * 13.5} y={(height / 100) * 65}>
           <LookingForText
             text={`Looking for ${lookingFor}`}
             size={width / 25}
           />
         </Container>
         {checkingWin && (
-          <Container x={(width / 20) * 5} y={(height / 4) * 1}>
+          <Container x={width / 6} y={(height / 4) * 1}>
             <Message
               height={height / 2}
-              width={width / 2}
+              width={width / 1.5}
               size={width / 20}
               text="Checking win. Please wait..."
             />
@@ -153,105 +152,3 @@ const App = () => {
 };
 
 export default App;
-
-interface MessageTextProps {
-  width: number;
-  height: number;
-  size: number;
-  text: string;
-}
-
-const Message = ({ width, height, text, size }: MessageTextProps) => {
-  const draw = useCallback(
-    (g) => {
-      g.clear();
-      g.beginFill(0xffffff, 0.9);
-      g.drawRoundedRect(0, 0, width, height, size);
-      g.endFill();
-    },
-    [height, width]
-  );
-  return (
-    <>
-      <Graphics draw={draw} />
-      <Text
-        text={text}
-        width={width - width / 10}
-        x={width / 2}
-        y={height / 2}
-        anchor={0.5}
-        style={{
-          fontFamily: "Arial",
-          fontSize: size,
-          fill: "black  ",
-          align: "center",
-          dropShadow: true,
-          dropShadowColor: "#fffffff",
-          dropShadowBlur: size / 5,
-          dropShadowDistance: size / 20,
-        }}
-      />
-    </>
-  );
-};
-
-interface LookingForTextProps {
-  size: number;
-  text: string;
-}
-
-const LookingForText = ({ size, text }: LookingForTextProps) => {
-  return (
-    <Text
-      text={text}
-      anchor={0}
-      style={
-        new TextStyle({
-          align: "center",
-          fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-          fontSize: size,
-          fontWeight: "bold",
-          fill: ["#ffffff"], // gradient
-          stroke: "#000",
-          strokeThickness: size / 100,
-          letterSpacing: size / 20,
-          dropShadow: true,
-          dropShadowColor: "#ffffff",
-          dropShadowBlur: size / 20,
-          dropShadowDistance: size / 50,
-          wordWrap: true,
-        })
-      }
-    />
-  );
-};
-
-interface ReadyToGoTextProps {
-  size: number;
-}
-
-const ReadyToGoText = ({ size }: ReadyToGoTextProps) => {
-  return (
-    <Text
-      text="Get ready to start!"
-      anchor={0}
-      style={
-        new TextStyle({
-          align: "center",
-          fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-          fontSize: size,
-          fontWeight: "bold",
-          fill: ["#ffffff"], // gradient
-          stroke: "#000",
-          strokeThickness: size / 100,
-          letterSpacing: size / 20,
-          dropShadow: true,
-          dropShadowColor: "#ffffff",
-          dropShadowBlur: size / 20,
-          dropShadowDistance: size / 50,
-          wordWrap: true,
-        })
-      }
-    />
-  );
-};

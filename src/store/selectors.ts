@@ -4,7 +4,7 @@ export const getLastNumber = (state: BingoState): number | undefined => {
   return pickedBalls.at(-1);
 };
 
-export const lookingFor = ["Line", "Corners", "House"];
+export const lookingFor = ["Line", "Two Lines", "Full House"];
 export const getLookingForText = (state: BingoState): string => {
   return lookingFor[state.lookingFor];
 };
