@@ -43,7 +43,7 @@ const saveCurrentGame = (state: BingoState) => {
 const saveHistory = (state: BingoState) => {
   const { history } = state;
   history.push(getCurrentGame({ ...state }));
-  // window.localStorage.setItem(GAME_HISTORY, JSON.stringify(history));
+  window.localStorage.setItem(GAME_HISTORY, JSON.stringify(history.slice(0, 10)));
 };
 
 const initialState: BingoState = {

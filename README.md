@@ -9,7 +9,7 @@ npm install
 ## Run
 
 ```
-npm run start
+npm start
 ```
 
 and open browser to http://localhost:3000/
