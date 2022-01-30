@@ -46,10 +46,12 @@ const saveHistory = (state: BingoState) => {
   window.localStorage.setItem(GAME_HISTORY, JSON.stringify(history.slice(0, 10)));
 };
 
+const maxBalls = 90;
+
 const initialState: BingoState = {
   pickedBalls: [],
-  initialBalls: Array.from({ length: 80 }, (_, i) => i + 1),
-  remainingBalls: Array.from({ length: 80 }, (_, i) => i + 1),
+  initialBalls: Array.from({ length: maxBalls }, (_, i) => i + 1),
+  remainingBalls: Array.from({ length: maxBalls }, (_, i) => i + 1),
   lookingFor: 0,
   complete: false,
   history: getHistory(),
